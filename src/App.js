@@ -1,27 +1,38 @@
+import React, { useState } from 'react';
+import AddTask from './components/AddTask';
 import TaskList from './components/TaskList';
 
-const taskList = [
-  {
-    id: 1,
-    name: 'React Native Course',
-    completed: true,
-  },
-
-  {
-    id: 2,
-    name: 'React Project',
-    completed: false,
-  },
-
-  {
-    id: 3,
-    name: 'Read the book',
-    completed: false,
-  },
-];
-// import logo from './logo.svg';
-
 function App() {
+  const DEMOTASKS = [
+    {
+      id: 1,
+      task: 'React Native Course',
+      completed: true,
+    },
+
+    {
+      id: 2,
+      task: 'React Project',
+      completed: false,
+    },
+
+    {
+      id: 3,
+      task: 'Read the book',
+      completed: false,
+    },
+  ];
+  const [taskList, setTaskList] = useState([DEMOTASKS]);
+
+  const addTaskHandler = (task) => {
+    setTaskList((prevTaskList) => {
+      return [
+        { task: task, completed: false, id: Math.random().toString() },
+        ...prevTaskList,
+       ];
+    });
+  };
+
   return (
     <div className="App">
       <div className="container">
@@ -39,7 +50,7 @@ function App() {
               <div className="filter">Completed</div>
             </div>
           </div>
-          <input className="add-task" placeholder="Add a New Task..." />
+          <AddTask onAddTask={addTaskHandler} />
           <TaskList taskList={taskList} />
         </div>
       </div>
