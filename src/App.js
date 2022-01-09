@@ -22,14 +22,14 @@ function App() {
       completed: false,
     },
   ];
-  const [taskList, setTaskList] = useState([DEMOTASKS]);
+  const [taskList, setTaskList] = useState(DEMOTASKS);
 
   const addTaskHandler = (task) => {
     setTaskList((prevTaskList) => {
       return [
         { task: task, completed: false, id: Math.random().toString() },
         ...prevTaskList,
-       ];
+      ];
     });
   };
 
@@ -43,7 +43,7 @@ function App() {
             <p className="text-gray">{new Date().toDateString()}</p>
           </header>
           <div className="tool-bar">
-            <p>5 tasks</p>
+            <p>{taskList.length} tasks</p>
             <div className="filters">
               <div className="filter is-active">All</div>
               <div className="filter">Active</div>
