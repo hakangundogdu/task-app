@@ -78,6 +78,17 @@ function App() {
           <TaskList taskList={filteredList} onDeleteTask={deleteTaskHandler} />
         </div>
       </div>
+      <section className="footer">
+        by{' '}
+        <a
+          className="footer"
+          rel="github"
+          href="https://github.com/hakangundogdu"
+          target="_blank"
+        >
+          Hakan Gundogdu
+        </a>
+      </section>
     </div>
   );
 }
