@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import AddTask from './components/AddTask';
 import TaskList from './components/TaskList';
+import FilterButton from './components/FilterButton';
+
+const FILTER_MAP = {
+  All: () => true,
+  Active: (task) => !task.completed,
+  Completed: (task) => task.completed,
+};
+
+const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App() {
   const DEMOTASKS = [
@@ -22,16 +31,35 @@ function App() {
       completed: false,
     },
   ];
+
   const [taskList, setTaskList] = useState(DEMOTASKS);
+  const [filter, setFilter] = useState('All');
 
   const addTaskHandler = (task) => {
-    setTaskList((prevTaskList) => {
-      return [
-        { task: task, completed: false, id: Math.random().toString() },
-        ...prevTaskList,
-      ];
-    });
+    if (task !== '') {
+      setTaskList((prevTaskList) => {
+        return [
+          { task: task, completed: false, id: Math.random().toString() },
+          ...prevTaskList,
+        ];
+      });
+    }
   };
+
+  const deleteTaskHandler = (id) => {
+    setTaskList(taskList.filter((task) => task.id !== id));
+  };
+
+  const filteredList = taskList.filter(FILTER_MAP[filter]);
+
+  const filterList = FILTER_NAMES.map((name) => (
+    <FilterButton
+      key={name}
+      name={name}
+      isPressed={name === filter}
+      setFilter={setFilter}
+    />
+  ));
 
   return (
     <div className="App">
@@ -43,15 +71,11 @@ function App() {
             <p className="text-gray">{new Date().toDateString()}</p>
           </header>
           <div className="tool-bar">
-            <p>{taskList.length} tasks</p>
-            <div className="filters">
-              <div className="filter is-active">All</div>
-              <div className="filter">Active</div>
-              <div className="filter">Completed</div>
-            </div>
+            <p>{filteredList.length} tasks</p>
+            <div className="filters">{filterList}</div>
           </div>
           <AddTask onAddTask={addTaskHandler} />
-          <TaskList taskList={taskList} />
+          <TaskList taskList={filteredList} onDeleteTask={deleteTaskHandler} />
         </div>
       </div>
     </div>

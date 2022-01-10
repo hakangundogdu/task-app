@@ -5,6 +5,9 @@ const AddTask = (props) => {
 
   const addTaskHandler = (event) => {
     event.preventDefault();
+    if (!enteredTask.trim()) {
+      return;
+    }
     props.onAddTask(enteredTask);
     setEnteredTask('');
   };
@@ -19,6 +22,7 @@ const AddTask = (props) => {
         className="add-task"
         type="text"
         placeholder="Add a New Task..."
+        autoComplete="off"
         value={enteredTask}
         onChange={taskChangeHandler}
       />

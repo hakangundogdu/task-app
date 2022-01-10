@@ -13,9 +13,15 @@ const TaskItem = (props) => {
         className="check-box"
         type="checkbox"
         checked={isDone}
-        onClick={markDone}
+        onChange={markDone}
       />
-      <p className="task-name">{props.task}</p>
+      <p className={isDone ? 'task-name-checked' : 'task-name'}>{props.task}</p>
+      <button
+        className="task-delete"
+        onClick={() => {
+          props.onDeleteTask(props.id);
+        }}
+      />
     </div>
   );
 };
