@@ -1,6 +1,6 @@
 ## Task App using ReactJS with hooks
 
-React / SCSS
+React / Firebase CRUD / SCSS
 
 - [Live](https://hakangundogdu.github.io/task-app/)
 
