@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, use } from 'react';
 import AddTask from './components/AddTask';
 import TaskList from './components/TaskList';
 import FilterButton from './components/FilterButton';
+import { useTask } from './store/task-context';
 
 const FILTER_MAP = {
   All: () => true,
@@ -12,43 +13,46 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App() {
-  const DEMOTASKS = [
-    {
-      id: 1,
-      task: 'React Native Course',
-      completed: true,
-    },
+  const { taskList, addTaskHandler, deleteTaskHandler, getTasks, tasksList } =
+    useTask();
 
-    {
-      id: 2,
-      task: 'React Project',
-      completed: false,
-    },
+  // const DEMOTASKS = [
+  //   {
+  //     id: 1,
+  //     task: 'React Native Course',
+  //     completed: true,
+  //   },
 
-    {
-      id: 3,
-      task: 'Read the book',
-      completed: false,
-    },
-  ];
+  //   {
+  //     id: 2,
+  //     task: 'React Project',
+  //     completed: false,
+  //   },
 
-  const [taskList, setTaskList] = useState(DEMOTASKS);
+  //   {
+  //     id: 3,
+  //     task: 'Read the book',
+  //     completed: false,
+  //   },
+  // ];
+
+  // const [taskList, setTaskList] = useState(DEMOTASKS);
   const [filter, setFilter] = useState('All');
 
-  const addTaskHandler = (task) => {
-    if (task !== '') {
-      setTaskList((prevTaskList) => {
-        return [
-          { task: task, completed: false, id: Math.random().toString() },
-          ...prevTaskList,
-        ];
-      });
-    }
-  };
+  // const addTaskHandler = (task) => {
+  //   if (task !== '') {
+  //     setTaskList((prevTaskList) => {
+  //       return [
+  //         { task: task, completed: false, id: Math.random().toString() },
+  //         ...prevTaskList,
+  //       ];
+  //     });
+  //   }
+  // };
 
-  const deleteTaskHandler = (id) => {
-    setTaskList(taskList.filter((task) => task.id !== id));
-  };
+  // const deleteTaskHandler = (id) => {
+  //   setTaskList(taskList.filter((task) => task.id !== id));
+  // };
 
   const filteredList = taskList.filter(FILTER_MAP[filter]);
 
@@ -77,6 +81,11 @@ function App() {
           <AddTask onAddTask={addTaskHandler} />
           <TaskList taskList={filteredList} onDeleteTask={deleteTaskHandler} />
         </div>
+        <div>
+          <button onClick={getTasks}>Get Tasks</button>
+          <div>{tasksList.length}</div>
+          <TaskList taskList={tasksList} onDeleteTask={deleteTaskHandler} />
+        </div>
       </div>
       <section className="footer">
         by{' '}
@@ -85,6 +94,7 @@ function App() {
           rel="github"
           href="https://github.com/hakangundogdu"
           target="_blank"
+          rel="noreferrer"
         >
           Hakan Gundogdu
         </a>
