@@ -8,7 +8,8 @@ const AddTask = (props) => {
     if (!enteredTask.trim()) {
       return;
     }
-    props.onAddTask(enteredTask);
+
+    props.createTask(enteredTask);
     setEnteredTask('');
   };
 

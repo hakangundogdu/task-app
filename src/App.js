@@ -1,4 +1,4 @@
-import React, { useState, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import AddTask from './components/AddTask';
 import TaskList from './components/TaskList';
 import FilterButton from './components/FilterButton';
@@ -13,48 +13,13 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App() {
-  const { taskList, addTaskHandler, deleteTaskHandler, getTasks, tasksList } =
-    useTask();
+  const { getTasks, tasksList, createTask, updateTask, deleteTask } = useTask();
 
-  // const DEMOTASKS = [
-  //   {
-  //     id: 1,
-  //     task: 'React Native Course',
-  //     completed: true,
-  //   },
-
-  //   {
-  //     id: 2,
-  //     task: 'React Project',
-  //     completed: false,
-  //   },
-
-  //   {
-  //     id: 3,
-  //     task: 'Read the book',
-  //     completed: false,
-  //   },
-  // ];
-
-  // const [taskList, setTaskList] = useState(DEMOTASKS);
   const [filter, setFilter] = useState('All');
 
-  // const addTaskHandler = (task) => {
-  //   if (task !== '') {
-  //     setTaskList((prevTaskList) => {
-  //       return [
-  //         { task: task, completed: false, id: Math.random().toString() },
-  //         ...prevTaskList,
-  //       ];
-  //     });
-  //   }
-  // };
+  useEffect(() => getTasks(), [getTasks]);
 
-  // const deleteTaskHandler = (id) => {
-  //   setTaskList(taskList.filter((task) => task.id !== id));
-  // };
-
-  const filteredList = taskList.filter(FILTER_MAP[filter]);
+  const filteredList = tasksList.filter(FILTER_MAP[filter]);
 
   const filterList = FILTER_NAMES.map((name) => (
     <FilterButton
@@ -70,7 +35,6 @@ function App() {
       <div className="container">
         <div className="card">
           <header className="header">
-            {/* <img src={logo} className="App-logo" alt="logo" /> */}
             <h1 className="title">Task Manager</h1>
             <p className="text-gray">{new Date().toDateString()}</p>
           </header>
@@ -78,13 +42,16 @@ function App() {
             <p>{filteredList.length} tasks</p>
             <div className="filters">{filterList}</div>
           </div>
-          <AddTask onAddTask={addTaskHandler} />
-          <TaskList taskList={filteredList} onDeleteTask={deleteTaskHandler} />
-        </div>
-        <div>
-          <button onClick={getTasks}>Get Tasks</button>
-          <div>{tasksList.length}</div>
-          <TaskList taskList={tasksList} onDeleteTask={deleteTaskHandler} />
+          <AddTask createTask={createTask} />
+          {filteredList.length > 0 ? (
+            <TaskList
+              taskList={filteredList}
+              deleteTask={deleteTask}
+              updateTask={updateTask}
+            />
+          ) : (
+            <p className="no-task">Nothing Here</p>
+          )}
         </div>
       </div>
       <section className="footer">

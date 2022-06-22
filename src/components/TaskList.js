@@ -9,7 +9,8 @@ const TaskList = (props) => {
           key={item.id}
           task={item.task}
           completed={item.completed}
-          onDeleteTask={props.onDeleteTask}
+          deleteTask={props.deleteTask}
+          updateTask={props.updateTask}
         />
       ))}
     </div>

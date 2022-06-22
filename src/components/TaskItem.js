@@ -3,23 +3,27 @@ import React, { useState } from 'react';
 const TaskItem = (props) => {
   const [isDone, setIsDone] = useState(props.completed);
 
-  const markDone = (props) => {
-    setIsDone((v) => !v);
-  };
+  // const markDone = (props) => {
+  //   setIsDone((v) => !v);
+  // };
 
   return (
     <div className="task-item">
       <input
         className="check-box"
         type="checkbox"
-        checked={isDone}
-        onChange={markDone}
+        checked={props.completed}
+        onChange={() => {
+          props.updateTask(props.id, props.completed);
+        }}
       />
-      <p className={isDone ? 'task-name-checked' : 'task-name'}>{props.task}</p>
+      <p className={props.completed ? 'task-name-checked' : 'task-name'}>
+        {props.task}
+      </p>
       <button
         className="task-delete"
         onClick={() => {
-          props.onDeleteTask(props.id);
+          props.deleteTask(props.id);
         }}
       />
     </div>
