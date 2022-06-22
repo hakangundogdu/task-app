@@ -1,4 +1,6 @@
-## Task App
+## Task App using ReactJS with hooks
+
+React / SCSS
 
 - [Live](https://hakangundogdu.github.io/task-app/)
 
