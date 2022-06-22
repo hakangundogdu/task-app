@@ -17,9 +17,9 @@ function App() {
 
   const [filter, setFilter] = useState('All');
 
-  useEffect(() => getTasks(), [getTasks]);
-
-  const filteredList = tasksList.filter(FILTER_MAP[filter]);
+  const filteredList = tasksList
+    .filter(FILTER_MAP[filter])
+    .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
 
   const filterList = FILTER_NAMES.map((name) => (
     <FilterButton
@@ -29,6 +29,12 @@ function App() {
       setFilter={setFilter}
     />
   ));
+
+  useEffect(() => {
+    getTasks();
+  }, []);
+
+  console.log(tasksList);
 
   return (
     <div className="App">

@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 import { db } from '../firebase-config';
 import {
   collection,
@@ -7,6 +7,7 @@ import {
   addDoc,
   deleteDoc,
   updateDoc,
+  serverTimestamp,
 } from '@firebase/firestore';
 
 const TaskContext = createContext();
@@ -23,19 +24,26 @@ export const TaskProvider = (props) => {
 
   const createTask = async (task) => {
     if (task !== '') {
-      await addDoc(taskCollectionRef, { task: task, completed: false });
+      await addDoc(taskCollectionRef, {
+        task: task,
+        completed: false,
+        createdAt: serverTimestamp(),
+      });
     }
+    getTasks();
   };
 
   const updateTask = async (id, completed) => {
     const taskDoc = doc(db, 'tasks', id);
     const newFields = { completed: !completed };
     await updateDoc(taskDoc, newFields);
+    getTasks();
   };
 
   const deleteTask = async (id) => {
     const taskDoc = doc(db, 'tasks', id);
     await deleteDoc(taskDoc);
+    getTasks();
   };
 
   return (
